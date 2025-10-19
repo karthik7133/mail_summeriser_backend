@@ -1,38 +1,53 @@
 // server.js
 
-// 1️⃣ Load environment variables (MUST be first)
+// ==================================================
+// 1️⃣ Load environment variables first
+// ==================================================
 require('dotenv').config({ path: __dirname + '/.env' });
 
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
 const { connectDB } = require('./config/mongodb');
-const authRoutes = require('./routes/authRoutes');
-const mailRoutes = require('./routes/mailRoutes');
-const chatRoutes = require('./routes/chatRoutes');
 
+// ==================================================
+// 2️⃣ Initialize Express
+// ==================================================
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ====== Debug: Check if env variables are loaded ======
-console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'Loaded' : 'Missing');
-console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? 'Loaded' : 'Missing');
+// ==================================================
+// 3️⃣ Debug environment (safe for Render logs)
+// ==================================================
+console.log('🔍 Checking environment variables:');
+console.log('MONGODB_URI:', process.env.MONGODB_URI ? '✅ Loaded' : '❌ Missing');
+console.log('OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? '✅ Loaded' : '❌ Missing');
+console.log('FIREBASE_CONFIG:', process.env.FIREBASE_CONFIG ? '✅ Loaded' : '❌ Missing');
 
-// ====== Firebase Admin Initialization ======
-// Firebase is already initialized in config/firebase.js
-const admin = require('./config/firebase');
-console.log('✅ Firebase Admin initialized successfully');
+// ==================================================
+// 4️⃣ Firebase Admin Initialization
+// ==================================================
+// config/firebase.js should export an initialized admin instance
+try {
+    const admin = require('./config/firebase');
+    console.log('✅ Firebase Admin initialized successfully');
+} catch (err) {
+    console.error('❌ Firebase initialization failed:', err.message);
+}
 
-// ====== Middleware ======
+// ==================================================
+// 5️⃣ Middleware
+// ==================================================
 app.use(cors({
-    origin: '*',
+    origin: '*', // you can restrict this to specific domains if needed
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ====== Health Check / Default Routes ======
+// ==================================================
+// 6️⃣ Health Check + Default Route
+// ==================================================
 app.get('/', (req, res) => {
     res.json({
         message: 'Mail Summarizer API',
@@ -52,14 +67,22 @@ app.get('/health', (req, res) => {
     });
 });
 
-// ====== API Routes ======
+// ==================================================
+// 7️⃣ Routes
+// ==================================================
+const authRoutes = require('./routes/authRoutes');
+const mailRoutes = require('./routes/mailRoutes');
+const chatRoutes = require('./routes/chatRoutes');
+
 app.use('/api/auth', authRoutes);
 app.use('/api/mails', mailRoutes);
 app.use('/api/chat', chatRoutes);
 
-// ====== Error Handling ======
+// ==================================================
+// 8️⃣ Error Handling
+// ==================================================
 app.use((err, req, res, next) => {
-    console.error('Error:', err);
+    console.error('❌ Error:', err);
     res.status(err.status || 500).json({
         error: err.message || 'Internal server error',
         details: process.env.NODE_ENV === 'development' ? err.stack : undefined,
@@ -73,18 +96,19 @@ app.use((req, res) => {
     });
 });
 
-// ====== Start Server ======
+// ==================================================
+// 9️⃣ Start Server
+// ==================================================
 const startServer = async () => {
     try {
-        await connectDB(); // Connect to MongoDB
+        await connectDB();
         console.log('✅ MongoDB connected successfully');
 
-        // Explicitly bind to '0.0.0.0' to ensure accessibility in hosted environments
+        // Important for Render — bind to 0.0.0.0
         app.listen(PORT, '0.0.0.0', () => {
             console.log(`\n🚀 Mail Summarizer API Server`);
-            console.log(`📡 Server running on 0.0.0.0:${PORT}`);
-            console.log(`🌐 API URL (Local access): http://localhost:${PORT}`);
-            console.log(`📝 Health check: http://localhost:${PORT}/health\n`);
+            console.log(`📡 Running on 0.0.0.0:${PORT}`);
+            console.log(`🩺 Health: http://localhost:${PORT}/health\n`);
         });
     } catch (error) {
         console.error('❌ Failed to start server:', error);
@@ -94,4 +118,7 @@ const startServer = async () => {
 
 startServer();
 
+// ==================================================
+// 🔚 Export (for testing or imports)
+// ==================================================
 module.exports = app;

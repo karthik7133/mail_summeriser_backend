@@ -1,2 +1,4 @@
 node_modules
 .env
+firebase-service-account.json
+mailgpt-47c2f-firebase-adminsdk-fbsvc-31ad5255e3.json

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "649368644263",
+    "project_id": "nakshatra-c9c16",
+    "storage_bucket": "nakshatra-c9c16.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649368644263:android:d41837886689b498efc982",
+        "android_client_info": {
+          "package_name": "com.example.mailgpt"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwR8LKQlY0z3syb1XvIqRMo_WTV_cn3Ss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649368644263:android:a199bc485193e022efc982",
+        "android_client_info": {
+          "package_name": "com.example.nakshatra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwR8LKQlY0z3syb1XvIqRMo_WTV_cn3Ss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

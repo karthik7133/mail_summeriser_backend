@@ -1,0 +1,23 @@
+{
+  "name": "mail-summarizer-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Mail Summarizer App with Firebase Auth, Gmail API, and ChatGPT integration",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.12.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "googleapis": "^164.0.0",
+    "mongoose": "^8.19.1",
+    "openai": "^6.5.0"
+  }
+}
